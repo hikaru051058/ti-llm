@@ -1,14 +1,43 @@
-# Welcome to your CDK TypeScript project
+# ti-llm mono-repo
 
-This is a blank project for CDK development with TypeScript.
+Gateway + ESP + TI for a minimal LLM link.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Quick start
+1) Copy env template and set values:
+   ```bash
+   cp .env.example .env
+   # edit .env: AWS_PROFILE, AWS_REGION, FACTORY_SECRET, URLs if known
+   ```
+2) Set factory secret in Secrets Manager:
+   ```bash
+   ./scripts/set-factory-secret.sh        # uses .env defaults
+   ```
+3) Deploy gateway:
+   ```bash
+   ./scripts/deploy-gateway.sh            # uses .env defaults
+   ```
+4) Flash ESP (set Wi-Fi/secret/URLs in `esp/src/main.cpp`), then:
+   ```bash
+   cd esp
+   pio run -t upload
+   pio device monitor --baud 115200 --eol LF --echo
+   ```
+5) Load TI program:
+   - Use `./scripts/push-ti-chat.sh --no-send` to build `CHAT.8xp`, then send with TI Connect CE (or push directly if you have tilp).
 
-## Useful commands
+## Structure
+- `gateway/` — CDK stack + Lambda (`gateway/README.md` for API and secrets).
+- `esp/` — ESP32 firmware (provisioning + ask).
+- `ti/` — TI chat stub and wiring steps.
+- `scripts/` — helper scripts (deploy, set secrets, push TI program).
+- `docs/` — protocol/notes.
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
+## Key scripts
+- `./scripts/set-factory-secret.sh` — create/update `ti-llm/factory-secret` (reads .env).
+- `./scripts/deploy-gateway.sh` — build + deploy CDK (reads .env).
+- `./scripts/push-ti-chat.sh [--no-send]` — build CHAT.8xp and optionally send.
+
+## Pointers
+- Deploy/API: `gateway/README.md`
+- ESP flashing/config: `esp/README.md`
+- TI program and wiring: `ti/README.md`
