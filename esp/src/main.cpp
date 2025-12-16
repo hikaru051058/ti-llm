@@ -7,7 +7,7 @@
 #include <ArduinoJson.h>
 
 // -------- CONFIGURE ME --------
-/*
+
 static const char *WIFI_SSID = "YOUR_WIFI_SSID";
 static const char *WIFI_PASS = "YOUR_WIFI_PASS";
 static const char *PROVISION_URL =
@@ -15,15 +15,7 @@ static const char *PROVISION_URL =
 static const char *ASK_URL =
     "ASK_URL";
 static const char *FACTORY_SECRET = "SET_FACTORY_SECRET";
-*/
 
-static const char *WIFI_SSID = "REMOVED";
-static const char *WIFI_PASS = "REMOVED";
-static const char *PROVISION_URL =
-    "https://REMOVED/prod/provision";
-static const char *ASK_URL =
-    "https://REMOVED/prod/ask";
-static const char *FACTORY_SECRET = "REMOVED";
 // ------------------------------
 
 static Preferences prefs;
